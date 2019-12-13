@@ -1,8 +1,8 @@
-%global systemd_units tracker-extract.service tracker-miner-apps.service tracker-miner-fs.service tracker-miner-rss.service tracker-writeback.service
+%global systemd_units tracker-extract.service tracker-miner-apps.service tracker-miner-fs.service tracker-writeback.service
 
 Name: tracker-miners
 Version: 2.1.5
-Release: 4
+Release: 5
 Summary: the indexer daemon (tracker-miner-fs) and tools to extract metadata from many different filetypes.
 License: GPLv2+ and LGPLv2+
 URL: https://wiki.gnome.org/Projects/Tracker
@@ -78,6 +78,12 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 %{_mandir}/man1/tracker-*.1*
 
 %changelog
+* Mon Nov 11 2019 chengquan<chengquan3@huawei.com> - 2.1.5-5
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:remove rss service
+
 * Thu Oct 31 2019 openEuler Buildteam <buildteam@openeuler.org> - 2.1.5-4
 - add Copyright in tracker-miners.conf.
 
