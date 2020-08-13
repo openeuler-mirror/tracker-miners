@@ -1,4 +1,4 @@
 version_control: gitlab.gnome
 src_repo: tracker-miners
-tag_prefix: ^V
+tag_prefix: 
 seperator: .
