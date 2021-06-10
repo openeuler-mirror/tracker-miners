@@ -1,22 +1,23 @@
-%global systemd_units tracker-extract.service tracker-miner-apps.service tracker-miner-fs.service tracker-writeback.service
+%global systemd_units tracker-extract.service tracker-miner-fs.service tracker-writeback.service
 
 Name: tracker-miners
-Version: 2.1.5
-Release: 6
+Version: 2.3.5
+Release: 1
 Summary: the indexer daemon (tracker-miner-fs) and tools to extract metadata from many different filetypes.
 License: GPLv2+ and LGPLv2+
 URL: https://wiki.gnome.org/Projects/Tracker
-Source0: https://download.gnome.org/sources/%{name}/2.1/%{name}-%{version}.tar.xz
+Source0: https://download.gnome.org/sources/%{name}/2.3/%{name}-%{version}.tar.xz
 Source1: tracker-miners.conf
 
-BuildRequires: giflib-devel intltool libjpeg-devel libtiff-devel systemd vala gdb
+BuildRequires: giflib-devel intltool libjpeg-devel libtiff-devel systemd vala gdb gcc meson
 BuildRequires: pkgconfig(exempi-2.0) pkgconfig(flac) pkgconfig(gexiv2) pkgconfig(gstreamer-1.0)
 BuildRequires: pkgconfig(gstreamer-pbutils-1.0) pkgconfig(gstreamer-tag-1.0) pkgconfig(icu-i18n)
 BuildRequires: pkgconfig(icu-uc) pkgconfig(libexif) pkgconfig(libgsf-1) pkgconfig(libgxps)
 BuildRequires: pkgconfig(libiptcdata) pkgconfig(libosinfo-1.0) pkgconfig(libpng) pkgconfig(libseccomp)
 BuildRequires: pkgconfig(libxml-2.0) pkgconfig(poppler-glib) pkgconfig(taglib_c) pkgconfig(totem-plparser)
-BuildRequires: pkgconfig(tracker-sparql-2.0) >= 2.1.0 pkgconfig(upower-glib) pkgconfig(vorbisfile)
-Requires: tracker%{?_isa} >= 2.1.0
+BuildRequires: pkgconfig(tracker-sparql-2.0) >= 2.2.0 pkgconfig(upower-glib) pkgconfig(vorbisfile)
+BuildRequires: pkgconfig(dbus-1) pkgconfig(enca) pkgconfig(libjpeg) pkgconfig(libtiff-4) 
+Requires: tracker%{?_isa} >= 2.2.0
 
 Obsoletes: tracker < 1.99.2
 Conflicts: tracker < 1.99.2
@@ -31,15 +32,17 @@ from many different filetypes.
 %autosetup -n %{name}-%{version}
 
 %build
-%configure --disable-static --enable-libflac --enable-libvorbis --disable-mp3 \
-           --disable-functional-tests --disable-silent-rules
-%make_build
+%meson \
+  -Dfunctional_tests=false \
+  -Dcue=disabled \
+  -Dminer_rss=false \
+  -Dsystemd_user_services=%{_userunitdir}
+%meson_build
 
 %install
-%make_install
+%meson_install
 %delete_la
-rm -rf %{buildroot}%{_datadir}/tracker-tests
-rm -rf %{buildroot}%{_libdir}/%{name}-2.0/*.so
+
 %find_lang %{name}
 
 # remove rpath info
@@ -62,9 +65,8 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 %systemd_user_postun_with_restart %{systemd_units}
 
 %files -f %{name}.lang
-%doc NEWS README
+%doc NEWS README.md
 %license COPYING COPYING.LGPL COPYING.GPL AUTHORS
-%config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %{_userunitdir}/tracker*.service
 %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 %{_libdir}/%{name}-2.0/
@@ -78,6 +80,11 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 %{_mandir}/man1/tracker-*.1*
 
 %changelog
+* Mon Jun 7 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 2.3.5-1
+- Upgrade to 2.3.5
+- Update Version, Release, Source0, BuildRequires
+- Update meson rebuild
+
 * Thu Mar 19 2020 chengquan<chengquan3@huawei.com> - 2.1.5-6
 - Type:bugfix
 - ID:NA
