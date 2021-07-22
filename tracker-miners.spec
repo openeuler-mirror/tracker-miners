@@ -2,14 +2,14 @@
 
 Name: tracker-miners
 Version: 2.3.5
-Release: 2
+Release: 3
 Summary: the indexer daemon (tracker-miner-fs) and tools to extract metadata from many different filetypes.
 License: GPLv2+ and LGPLv2+
 URL: https://wiki.gnome.org/Projects/Tracker
 Source0: https://download.gnome.org/sources/%{name}/2.3/%{name}-%{version}.tar.xz
 Source1: tracker-miners.conf
 
-BuildRequires: giflib-devel intltool libjpeg-devel libtiff-devel systemd vala gdb gcc meson chrpath
+BuildRequires: giflib-devel intltool libjpeg-devel libtiff-devel systemd vala gcc meson chrpath
 BuildRequires: pkgconfig(exempi-2.0) pkgconfig(flac) pkgconfig(gexiv2) pkgconfig(gstreamer-1.0)
 BuildRequires: pkgconfig(gstreamer-pbutils-1.0) pkgconfig(gstreamer-tag-1.0) pkgconfig(icu-i18n)
 BuildRequires: pkgconfig(icu-uc) pkgconfig(libexif) pkgconfig(libgsf-1) pkgconfig(libgxps)
@@ -80,6 +80,12 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 %{_mandir}/man1/tracker-*.1*
 
 %changelog
+* Thu Jul 22 2021 shixuantong<shixuantong@huawei.com> - 2.3.5-3
+- Type:bugfix
+- CVE:NA
+- SUG:NA
+- DESC:remove gdb from BuildRequires
+
 * Thu Jun 23 2021 yuanxin<yuanxin24@huawei.com> - 2.3.5-2
 - Type:bugfix
 - CVE:NA
