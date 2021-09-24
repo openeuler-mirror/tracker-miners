@@ -2,7 +2,7 @@
 
 Name: tracker-miners
 Version: 2.3.5
-Release: 3
+Release: 4
 Summary: the indexer daemon (tracker-miner-fs) and tools to extract metadata from many different filetypes.
 License: GPLv2+ and LGPLv2+
 URL: https://wiki.gnome.org/Projects/Tracker
@@ -48,9 +48,6 @@ from many different filetypes.
 # remove rpath info
 find %{buildroot}/ -type f -exec file {} ';' | grep "\<ELF\>" | grep -v 'libwriteback\|libtracker-extract' | awk -F ':' '{print $1}' | xargs -i chrpath --delete {}
 
-install -d %{buildroot}%{_sysconfdir}/ld.so.conf.d
-install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
-
 %check
 
 %pre
@@ -68,7 +65,6 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 %doc NEWS README.md
 %license COPYING COPYING.LGPL COPYING.GPL AUTHORS
 %{_userunitdir}/tracker*.service
-%{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 %{_libdir}/%{name}-2.0/
 %{_libexecdir}/tracker*
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
@@ -80,6 +76,9 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 %{_mandir}/man1/tracker-*.1*
 
 %changelog
+* Thu Sep 23 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 2.3.5-4
+- Ignore tracker-miners's dynamic library search path(file)
+
 * Thu Jul 22 2021 shixuantong<shixuantong@huawei.com> - 2.3.5-3
 - Type:bugfix
 - CVE:NA
